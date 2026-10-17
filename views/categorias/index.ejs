@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+<div class="encabezado">
+  <h1>Categorías</h1>
+  <a class="btn btn-primario" href="/categorias/nuevo">+ Nueva categoría</a>
+</div>
+<div class="tarjeta">
+  <table class="tabla">
+    <thead><tr><th>#</th><th>Nombre</th><th>Descripción</th><th>Tickets</th><th></th></tr></thead>
+    <tbody>
+      <% categorias.forEach(function (c) { %>
+        <tr>
+          <td><%= c.idcategoria %></td>
+          <td><%= c.nombre_categoria %></td>
+          <td><%= c.descripcion || '—' %></td>
+          <td><%= c.tickets %></td>
+          <td class="acciones">
+            <a class="btn btn-secundario btn-chico" href="/categorias/<%= c.idcategoria %>/editar">Editar</a>
+            <form method="post" action="/categorias/<%= c.idcategoria %>/eliminar" onsubmit="return confirm('¿Eliminar la categoría <%= c.nombre_categoria %>?');">
+              <button class="btn btn-peligro btn-chico" type="submit">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+<div class="tarjeta formulario-tarjeta">
+  <h1><%= titulo %></h1>
+  <% if (errores.length) { %>
+    <div class="aviso aviso-error"><ul><% errores.forEach(function (e) { %><li><%= e %></li><% }) %></ul></div>
+  <% } %>
+  <form method="post" action="<%= item.idcategoria ? '/categorias/' + item.idcategoria : '/categorias' %>" class="formulario">
+    <label>Nombre
+      <input type="text" name="nombre_categoria" value="<%= item.nombre_categoria || '' %>" maxlength="45" required>
+    </label>
+    <label>Descripción
+      <textarea name="descripcion" rows="3"><%= item.descripcion || '' %></textarea>
+    </label>
+    <div class="botones">
+      <button class="btn btn-primario" type="submit">Guardar</button>
+      <a class="btn btn-secundario" href="/categorias">Cancelar</a>
+    </div>
+  </form>
+</div>
+<%- include('../partials/footer') %>

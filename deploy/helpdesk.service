@@ -1,0 +1,18 @@
+[Unit]
+Description=Helpdesk - Sistema de tickets (Node.js + Express)
+After=network.target mariadb.service
+Wants=mariadb.service
+
+[Service]
+Type=simple
+User=debian
+Group=debian
+WorkingDirectory=/opt/helpdesk-app
+EnvironmentFile=/opt/helpdesk-app/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node src/server.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

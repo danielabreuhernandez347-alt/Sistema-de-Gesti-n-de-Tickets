@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+<% const staff = usuario.rol === 'admin' || usuario.rol === 'agente'; %>
+<div class="tarjeta formulario-tarjeta">
+  <h1><%= titulo %></h1>
+  <% if (errores.length) { %>
+    <div class="aviso aviso-error"><ul><% errores.forEach(function (e) { %><li><%= e %></li><% }) %></ul></div>
+  <% } %>
+  <form method="post" action="<%= esNuevo ? '/tickets' : '/tickets/' + item.idticket %>" class="formulario">
+    <label>Título (¿qué pasó?)
+      <input type="text" name="titulo" value="<%= item.titulo || '' %>" maxlength="150" required placeholder="Ej.: No puedo imprimir desde mi computadora">
+    </label>
+    <label>Descripción del problema
+      <textarea name="descripcion" rows="5" required placeholder="Cuenta con detalle qué ocurre, desde cuándo y qué has intentado."><%= item.descripcion || '' %></textarea>
+    </label>
+    <div class="fila">
+      <label>Categoría
+        <select name="id_categoria" required>
+          <option value="">Selecciona...</option>
+          <% categorias.forEach(function (c) { %>
+            <option value="<%= c.idcategoria %>" <%= Number(item.id_categoria) === c.idcategoria ? 'selected' : '' %>><%= c.nombre_categoria %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Urgencia
+        <select name="prioridad">
+          <% PRIORIDADES.forEach(function (p) { %>
+            <option value="<%= p %>" <%= item.prioridad === p ? 'selected' : '' %>><%= etiquetaPrioridad(p) %></option>
+          <% }) %>
+        </select>
+      </label>
+    </div>
+
+    <% if (staff) { %>
+      <div class="fila">
+        <label>Solicitante
+          <select name="id_solicitante">
+            <% solicitantes.forEach(function (s) { %>
+              <option value="<%= s.idusuarios %>" <%= Number(item.id_solicitante) === s.idusuarios ? 'selected' : '' %>><%= s.nombre %></option>
+            <% }) %>
+          </select>
+        </label>
+        <label>Agente asignado
+          <select name="id_agente">
+            <option value="">Sin asignar</option>
+            <% agentes.forEach(function (a) { %>
+              <option value="<%= a.idusuarios %>" <%= Number(item.id_agente) === a.idusuarios ? 'selected' : '' %>><%= a.nombre %></option>
+            <% }) %>
+          </select>
+        </label>
+        <% if (!esNuevo) { %>
+          <label>Estado
+            <select name="estado">
+              <% ESTADOS.forEach(function (e) { %>
+                <option value="<%= e %>" <%= item.estado === e ? 'selected' : '' %>><%= etiquetaEstado(e) %></option>
+              <% }) %>
+            </select>
+          </label>
+        <% } %>
+      </div>
+    <% } %>
+
+    <% if (esNuevo) { %>
+      <fieldset class="preguntas">
+        <legend>Preguntas rápidas</legend>
+        <% PREGUNTAS.forEach(function (p) { %>
+          <label><%= p.texto %>
+            <select name="<%= p.clave %>">
+              <option value="">Sin responder</option>
+              <% p.opciones.forEach(function (o) { %>
+                <option value="<%= o %>" <%= (item.respuestas && item.respuestas[p.clave]) === o ? 'selected' : '' %>><%= o %></option>
+              <% }) %>
+            </select>
+          </label>
+        <% }) %>
+      </fieldset>
+    <% } %>
+
+    <div class="botones">
+      <button class="btn btn-primario" type="submit"><%= esNuevo ? 'Crear ticket' : 'Guardar cambios' %></button>
+      <a class="btn btn-secundario" href="<%= esNuevo ? '/tickets' : '/tickets/' + item.idticket %>">Cancelar</a>
+    </div>
+  </form>
+</div>
+<%- include('../partials/footer') %>

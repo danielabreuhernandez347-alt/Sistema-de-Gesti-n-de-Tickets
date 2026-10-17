@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+<div class="encabezado">
+  <h1>Tickets</h1>
+  <a class="btn btn-primario" href="/tickets/nuevo">+ Nuevo ticket</a>
+</div>
+<div class="tarjeta">
+  <form method="get" action="/tickets" class="filtros">
+    <input type="search" name="q" value="<%= q %>" placeholder="Buscar por título, descripción o solicitante">
+    <select name="estado">
+      <option value="">Todos los estados</option>
+      <% ESTADOS.forEach(function (e) { %><option value="<%= e %>" <%= estado === e ? 'selected' : '' %>><%= etiquetaEstado(e) %></option><% }) %>
+    </select>
+    <select name="prioridad">
+      <option value="">Todas las prioridades</option>
+      <% PRIORIDADES.forEach(function (p) { %><option value="<%= p %>" <%= prioridad === p ? 'selected' : '' %>><%= etiquetaPrioridad(p) %></option><% }) %>
+    </select>
+    <button class="btn btn-secundario" type="submit">Filtrar</button>
+    <a class="btn btn-enlace" href="/tickets">Limpiar</a>
+  </form>
+
+  <% if (!tickets.length) { %>
+    <p class="texto-suave">No se encontraron tickets.</p>
+  <% } else { %>
+    <table class="tabla">
+      <thead>
+        <tr><th>#</th><th>Título</th><th>Estado</th><th>Prioridad</th><th>Categoría</th><th>Solicitante</th><th>Agente</th><th>Creado</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% tickets.forEach(function (t) { %>
+          <tr>
+            <td><%= t.idticket %></td>
+            <td><a href="/tickets/<%= t.idticket %>"><%= t.titulo %></a></td>
+            <td><span class="etiqueta estado-<%= t.estado %>"><%= etiquetaEstado(t.estado) %></span></td>
+            <td><span class="etiqueta prioridad-<%= t.prioridad %>"><%= etiquetaPrioridad(t.prioridad) %></span></td>
+            <td><%= t.categoria %></td>
+            <td><%= t.solicitante %></td>
+            <td><%= t.agente || '<sin asignar>' %></td>
+            <td><%= fmtFecha(t.fecha_creacion) %></td>
+            <td class="acciones">
+              <a class="btn btn-secundario btn-chico" href="/tickets/<%= t.idticket %>">Ver</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <p class="texto-suave"><%= tickets.length %> ticket(s).</p>
+  <% } %>
+</div>
+<%- include('../partials/footer') %>

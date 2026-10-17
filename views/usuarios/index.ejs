@@ -1,0 +1,34 @@
+<%- include('../partials/header') %>
+<div class="encabezado">
+  <h1>Usuarios</h1>
+  <a class="btn btn-primario" href="/usuarios/nuevo">+ Nuevo usuario</a>
+</div>
+<div class="tarjeta">
+  <table class="tabla">
+    <thead>
+      <tr><th>#</th><th>Nombre</th><th>Correo</th><th>Rol</th><th>Tickets creados</th><th>Asignados</th><th>Registro</th><th></th></tr>
+    </thead>
+    <tbody>
+      <% usuarios.forEach(function (u) { %>
+        <tr>
+          <td><%= u.idusuarios %></td>
+          <td><%= u.nombre %></td>
+          <td><%= u.correo %></td>
+          <td><span class="etiqueta rol-<%= u.rol %>"><%= etiquetaRol(u.rol) %></span></td>
+          <td><%= u.tickets_creados %></td>
+          <td><%= u.tickets_asignados %></td>
+          <td><%= fmtFecha(u.fecha_registro) %></td>
+          <td class="acciones">
+            <a class="btn btn-secundario btn-chico" href="/usuarios/<%= u.idusuarios %>/editar">Editar</a>
+            <% if (u.idusuarios !== usuario.id) { %>
+              <form method="post" action="/usuarios/<%= u.idusuarios %>/eliminar" onsubmit="return confirm('¿Eliminar al usuario <%= u.nombre %>?');">
+                <button class="btn btn-peligro btn-chico" type="submit">Eliminar</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('../partials/footer') %>

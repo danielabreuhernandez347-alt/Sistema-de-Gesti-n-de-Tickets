@@ -1,0 +1,7 @@
+<%- include('partials/header') %>
+<div class="tarjeta">
+  <h1><%= titulo %></h1>
+  <p><%= mensaje %></p>
+  <p><a class="btn btn-secundario" href="<%= usuario ? '/' : '/login' %>">Volver al inicio</a></p>
+</div>
+<%- include('partials/footer') %>

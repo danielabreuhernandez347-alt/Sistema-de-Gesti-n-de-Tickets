@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= titulo %> · Helpdesk</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+<header class="barra">
+  <div class="contenedor barra-contenido">
+    <a class="marca" href="/">🎫 Helpdesk</a>
+    <% if (usuario) { %>
+      <nav class="menu">
+        <a href="/" class="<%= rutaActual === '/' ? 'activo' : '' %>">Inicio</a>
+        <a href="/tickets" class="<%= rutaActual.startsWith('/tickets') ? 'activo' : '' %>">Tickets</a>
+        <% if (usuario.rol === 'admin' || usuario.rol === 'agente') { %>
+          <a href="/categorias" class="<%= rutaActual.startsWith('/categorias') ? 'activo' : '' %>">Categorías</a>
+        <% } %>
+        <% if (usuario.rol === 'admin') { %>
+          <a href="/usuarios" class="<%= rutaActual.startsWith('/usuarios') ? 'activo' : '' %>">Usuarios</a>
+        <% } %>
+      </nav>
+      <div class="sesion">
+        <span><%= usuario.nombre %> <small class="etiqueta rol-<%= usuario.rol %>"><%= etiquetaRol(usuario.rol) %></small></span>
+        <form method="post" action="/logout"><button class="btn btn-secundario btn-chico" type="submit">Salir</button></form>
+      </div>
+    <% } %>
+  </div>
+</header>
+<main class="contenedor">
+  <% if (flash) { %>
+    <div class="aviso aviso-<%= flash.tipo %>"><%= flash.texto %></div>
+  <% } %>

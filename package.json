@@ -1,0 +1,20 @@
+{
+  "name": "helpdesk-app",
+  "version": "1.0.0",
+  "description": "Sistema de tickets de soporte técnico - Grupo 6 (UAPA) - Node.js + Express + MariaDB",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node test/prueba_e2e.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^18.0.8",
+    "ejs": "^7.0.1",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.24.6"
+  }
+}

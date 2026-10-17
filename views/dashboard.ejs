@@ -1,0 +1,50 @@
+<%- include('partials/header') %>
+<div class="encabezado">
+  <h1>Hola, <%= usuario.nombre %></h1>
+  <a class="btn btn-primario" href="/tickets/nuevo">+ Nuevo ticket</a>
+</div>
+
+<section class="tarjetas-numeros">
+  <div class="numero"><span class="valor"><%= total %></span><span class="etiqueta-num">Tickets en total</span></div>
+  <div class="numero estado-abierto"><span class="valor"><%= estados.abierto %></span><span class="etiqueta-num">Abiertos</span></div>
+  <div class="numero estado-en_proceso"><span class="valor"><%= estados.en_proceso %></span><span class="etiqueta-num">En proceso</span></div>
+  <div class="numero estado-resuelto"><span class="valor"><%= estados.resuelto %></span><span class="etiqueta-num">Resueltos</span></div>
+  <div class="numero estado-cerrado"><span class="valor"><%= estados.cerrado %></span><span class="etiqueta-num">Cerrados</span></div>
+</section>
+
+<section class="dos-columnas">
+  <div class="tarjeta">
+    <h2>Este mes</h2>
+    <table class="tabla tabla-simple">
+      <tr><td>Tickets creados</td><td class="derecha"><strong><%= creadosMes %></strong></td></tr>
+      <tr><td>Tickets atendidos (resueltos/cerrados)</td><td class="derecha"><strong><%= cerradosMes %></strong></td></tr>
+    </table>
+    <h2>Por prioridad</h2>
+    <table class="tabla tabla-simple">
+      <% ['critica','alta','media','baja'].forEach(function (p) { %>
+        <tr><td><span class="etiqueta prioridad-<%= p %>"><%= etiquetaPrioridad(p) %></span></td><td class="derecha"><strong><%= prioridades[p] %></strong></td></tr>
+      <% }) %>
+    </table>
+  </div>
+  <div class="tarjeta">
+    <h2>Últimos tickets</h2>
+    <% if (!recientes.length) { %>
+      <p class="texto-suave">Todavía no hay tickets registrados.</p>
+    <% } else { %>
+      <ul class="lista-limpia">
+        <% recientes.forEach(function (t) { %>
+          <li>
+            <a href="/tickets/<%= t.idticket %>"><strong>#<%= t.idticket %></strong> <%= t.titulo %></a>
+            <div class="texto-suave">
+              <span class="etiqueta estado-<%= t.estado %>"><%= etiquetaEstado(t.estado) %></span>
+              <span class="etiqueta prioridad-<%= t.prioridad %>"><%= etiquetaPrioridad(t.prioridad) %></span>
+              · <%= t.categoria %> · <%= fmtFecha(t.fecha_creacion) %>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+    <p><a href="/tickets">Ver todos los tickets →</a></p>
+  </div>
+</section>
+<%- include('partials/footer') %>

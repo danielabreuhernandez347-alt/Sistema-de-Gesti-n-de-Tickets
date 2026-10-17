@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+<div class="tarjeta formulario-tarjeta">
+  <h1><%= titulo %></h1>
+  <% if (errores.length) { %>
+    <div class="aviso aviso-error"><ul><% errores.forEach(function (e) { %><li><%= e %></li><% }) %></ul></div>
+  <% } %>
+  <form method="post" action="<%= esNuevo ? '/usuarios' : '/usuarios/' + item.idusuarios %>" class="formulario">
+    <label>Nombre completo
+      <input type="text" name="nombre" value="<%= item.nombre || '' %>" maxlength="45" required>
+    </label>
+    <label>Correo
+      <input type="email" name="correo" value="<%= item.correo || '' %>" maxlength="45" required>
+    </label>
+    <label>Rol
+      <select name="rol">
+        <% roles.forEach(function (r) { %>
+          <option value="<%= r %>" <%= item.rol === r ? 'selected' : '' %>><%= etiquetaRol(r) %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label><%= esNuevo ? 'Contraseña' : 'Nueva contraseña (dejar en blanco para no cambiarla)' %>
+      <input type="password" name="password" minlength="6" <%= esNuevo ? 'required' : '' %> autocomplete="new-password">
+    </label>
+    <div class="botones">
+      <button class="btn btn-primario" type="submit">Guardar</button>
+      <a class="btn btn-secundario" href="/usuarios">Cancelar</a>
+    </div>
+  </form>
+</div>
+<%- include('../partials/footer') %>
